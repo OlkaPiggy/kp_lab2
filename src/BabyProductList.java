@@ -10,16 +10,25 @@
 
 public class BabyProductList {
 
-    void print(BabyProduct[] arr)
+    public BabyProduct[] arr;
+    public int realSize;
+
+    BabyProductList(BabyProduct[] arr,int realSize)
     {
-        for(int i=0;i<arr.length;i++)
+        this.arr=arr;
+        this.realSize=realSize;
+    }
+    void print()
+    {
+        for(int i=0;i<realSize;i++)
             if(arr[i]!=null)
                 arr[i].print();
+        System.out.print("\n");
     }
-    BabyProduct[] serchAge(BabyProduct[] arr, int age) {
-        BabyProduct[] serched=new BabyProduct[arr.length];
+    void serchAge( int age) {
+        BabyProduct[] serched=new BabyProduct[realSize];
         int k=0;
-        for (int i = 0; i<arr.length;i++)
+        for (int i = 0; i<realSize;i++)
         {
             if(arr[i].minage<=age && arr[i].maxage>=age)
             {
@@ -27,16 +36,17 @@ public class BabyProductList {
                 k++;
             }
         }
-        return serched;
+        realSize=k;
+        this.arr=serched;
     }
 
-    void swap(BabyProduct[] arr, int i, int j)
+    void swap( int i, int j)
     {
         BabyProduct temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
-    int partitioninIncreasingDate(BabyProduct[] arr, int low, int high)
+    int partitioninIncreasingDate(int low, int high)
     {
         BabyProduct pivot = arr[high];
         int i = (low - 1);
@@ -45,14 +55,14 @@ public class BabyProductList {
             if (arr[j].expirationDate < pivot.expirationDate)
             {
                 i++;
-                swap(arr, i, j);
+                swap( i, j);
             }
         }
-        swap(arr, i + 1, high);
+        swap( i + 1, high);
         return (i + 1);
     }
 
-    int partitioninDecreasingDate(BabyProduct[] arr, int low, int high)
+    int partitioninDecreasingDate( int low, int high)
     {
         BabyProduct pivot = arr[high];
         int i = (low - 1);
@@ -61,13 +71,13 @@ public class BabyProductList {
             if (arr[j].expirationDate > pivot.expirationDate)
             {
                 i++;
-                swap(arr, i, j);
+                swap( i, j);
             }
         }
-        swap(arr, i + 1, high);
+        swap( i + 1, high);
         return (i + 1);
     }
-    int partitioninDecreasingAlphabet(BabyProduct[] arr, int low, int high)
+    int partitioninDecreasingAlphabet(int low, int high)
     {
         BabyProduct pivot = arr[high];
         int i = (low - 1);
@@ -76,14 +86,14 @@ public class BabyProductList {
             if  (arr[j].name.compareTo(pivot.name) > 0)
             {
                 i++;
-                swap(arr, i, j);
+                swap( i, j);
             }
         }
-        swap(arr, i + 1, high);
+        swap(i + 1, high);
         return (i + 1);
     }
 
-    int partitioninIncreasingAlphabet(BabyProduct[] arr, int low, int high)
+    int partitioninIncreasingAlphabet(int low, int high)
     {
         BabyProduct pivot = arr[high];
         int i = (low - 1);
@@ -92,20 +102,28 @@ public class BabyProductList {
             if  (arr[j].name.compareTo(pivot.name) < 0)
             {
                 i++;
-                swap(arr, i, j);
+                swap( i, j);
             }
         }
-        swap(arr, i + 1, high);
+        swap( i + 1, high);
         return (i + 1);
     }
 
-    public void quickSort(BabyProduct[] arr, int low, int high)
+    public void quickSort( int low, int high, int sortType)
     {
         if (low < high)
         {
-            int pi = partitioninDecreasingAlphabet(arr, low, high);
-            quickSort(arr, low, pi - 1);
-            quickSort(arr, pi + 1, high);
+            int pi=0;
+            if(sortType==3)
+                pi = partitioninIncreasingAlphabet(low,high);
+            if(sortType==4)
+                pi = partitioninDecreasingAlphabet( low, high);
+            if(sortType==5)
+                pi = partitioninIncreasingDate(low, high);
+            if(sortType==6)
+                pi = partitioninDecreasingDate(low, high);
+            quickSort(low, pi - 1,sortType);
+            quickSort(pi + 1, high,sortType);
         }
     }
 
