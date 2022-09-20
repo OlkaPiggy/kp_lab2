@@ -1,5 +1,5 @@
-cloth 5 6 7
-shoes 7 1 10
-toy1 21 6 12
-kkk 8 3 14
-wetz 4 3 18
+trainers 5 6 7 500
+costume 7 1 10 700
+toy 21 6 12 1500
+sandals 8 3 14 250
+toy 4 3 18 400

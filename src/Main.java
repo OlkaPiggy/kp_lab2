@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*Дитячий магазин. Реалізувати ієрархію засобів догляду за немовлятами, які є в
@@ -12,22 +13,23 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
         System.out.println("lab2!");
-        BabyProduct[] arr=new BabyProduct[10];
+        ArrayList<BabyProduct> arr=new ArrayList<BabyProduct>();
         int written = 0;
         Scanner in = new Scanner(System.in);
 
         while(true) {
             System.out.println("What data to use?");
-            System.out.println("1) automatic data\n2) read from file\n3) enter yourself\n");
+            System.out.println("1) automatic data\n2) read from file\n");
             int choose = in.nextInt();
 
             if (choose == 1) {
-                arr[0] = new BabyProduct("cloth", 5, 6, 7);
-                arr[1] = new BabyProduct("shoes", 7, 1, 10);
-                arr[2] = new BabyProduct("toy1", 2, 1, 12);
-                arr[3] = new BabyProduct("kkk", 8, 3, 14);
-                arr[4] = new BabyProduct("wetz", 4, 3, 18);
+                arr.add( new BabyProduct("cloth", 5, 6, 7,500));
+                arr.add( new BabyProduct("shoes", 7, 1, 10,250));
+                arr.add( new BabyProduct("toy1", 2, 1, 12,1300));
+                arr.add( new BabyProduct("kkk", 8, 3, 14,500));
+                arr.add( new BabyProduct("wetz", 4, 3, 18,700));
                 written = 5;
                 break;
             }
@@ -43,7 +45,8 @@ public class Main {
                         int dateRead = Integer.parseInt(words[1]);
                         int minaAgeRead = Integer.parseInt(words[2]);
                         int maxAgeRead = Integer.parseInt(words[3]);
-                        arr[written] = new BabyProduct(nameRead, dateRead, minaAgeRead, maxAgeRead);
+                        int price=Integer.parseInt(words[4]);
+                        arr.add( new BabyProduct(nameRead, dateRead, minaAgeRead, maxAgeRead,price));
                         written++;
                     }
                     myReader.close();
@@ -53,15 +56,12 @@ public class Main {
                 }
                 break;
             }
-            else if (choose == 3) {
-                break;
-            }
             else
                 System.out.println("Wrong input");
         }
 
         //to do with
-        BabyProductList list = new BabyProductList(arr,written);
+        BabyProductListManager list = new BabyProductListManager(arr,written);
         while(true) {
             System.out.println("What do you want to do?");
             System.out.println("1) print list\n2) find products for a certain age\n3) sort by names in ascending order");
@@ -72,25 +72,28 @@ public class Main {
                 list.print();
             else if(choose==2)
             {
+                FindManager find =new FindManager();
                 System.out.println("Which age? ");
                 int age=in.nextInt();
-                list.serchAge( age);
+                FindManager.serchAge(list, age);
                 list.print();
             }
             else if(choose==3) {
-                list.quickSort(0,list.realSize -1,choose);
+                SortManager sort= new SortManager();
+                list.setArr(sort.sortAlphabetEncreasing(list.getArr()));
                 list.print();
             }
             else if(choose==4) {
-                list.quickSort(0, list.realSize-1,choose);
+                SortManager sort= new SortManager();
+                list.setArr(sort.sortAlphabetDecreasing(list.getArr()));
                 list.print();
             }
             else if(choose==5) {
-                list.quickSort(0, list.realSize-1, choose);
+                list.setArr(SortManager.sortPriceIncreasing(list.getArr()));
                 list.print();
             }
             else if(choose==6) {
-                list.quickSort(0, list.realSize-1,choose);
+                list.setArr(SortManager.sortPriceDecreasing(list.getArr()));
                 list.print();
             }
             else
